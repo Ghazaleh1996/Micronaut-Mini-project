@@ -5,6 +5,7 @@ import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -20,23 +21,14 @@ public class Transaction {
     int id;
 
     @Column
-    String name;
-    @Column
     int points;
-    @Column
-    double amount;
+
+    @CreationTimestamp
     @Column
     LocalTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Merchant merchant;
-
-
-
 
 }

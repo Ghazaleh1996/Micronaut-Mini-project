@@ -19,6 +19,8 @@ public class MerchantAreaController {
 
     @Inject
     CustomersService customersService;
+
+    @Inject
     TransactionService transactionService;
 
     @Get("/merchant-area/customers")
@@ -35,9 +37,9 @@ public class MerchantAreaController {
     public Customer find(@PathVariable int id, @Body CustomerInput input) {
         return customersService.update(id, input.getName(), input.getSurname());
     }
-    @Post("/merchant-area/customers/{id}/{points}")
-    public Customer update(@PathVariable int id, @PathVariable int points,@PathVariable int delta, @Body CustomerInput input) {
-        return customersService.update(id, points, delta,input.getName(), input.getSurname());
+    @Post("/merchant-area/customers/{id}/points")
+    public Customer update(@PathVariable int id, @Body CreateTransactionInput input) {
+        return transactionService.createTx(id, input.getPoints());
     }
     @Get("/merchant-area/transactions")
     public List<Transaction> generallist() {
@@ -60,6 +62,10 @@ public class MerchantAreaController {
     static class CustomerInput {
         String name;
         String surname;
+    }
+
+    @Getter @Setter @Serdeable
+    static class CreateTransactionInput {
         int points;
     }
 }

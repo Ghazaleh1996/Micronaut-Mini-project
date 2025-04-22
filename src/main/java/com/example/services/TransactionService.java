@@ -32,4 +32,17 @@ public class TransactionService {
                 .getResultList();
     }
 
+    @Transactional
+    public Customer createTx(int customerId, int points) {
+        var customer=em.find(Customer.class, customerId);
+        int newPoints= customer.getPoints()+points;
+        customer.setPoints(newPoints);
+        em.merge(customer);
+        var tx = new Transaction();
+        tx.setCustomer(customer);
+        tx.setPoints(points);
+        em.persist(tx);
+        log.debug("updated customer points {}",customerId);
+        return customer;
+    }
 }
