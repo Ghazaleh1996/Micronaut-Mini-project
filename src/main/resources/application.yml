@@ -1,0 +1,29 @@
+micronaut:
+  application:
+    name: demo
+  security:
+    authentication: session
+jpa:
+  default:
+    packages-to-scan:
+      - com.example
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+    entity-scan:
+      packages: com.example
+datasources:
+  default:
+    url: jdbc:mysql://localhost/loyalty?rewriteBatchedStatements=true&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&useCompression=true&autoReconnect=true&serverTimezone=Europe/Rome&allowPublicKeyRetrieval=true
+    db-type: mysql
+    username: Loyalty System
+    password:
+    minimumIdle: 0
+    maximumPoolSize: 5
+    connectionTimeout: 50000
+    maxLifetime: 300000
+    idleTimeout: 30000
+    validationTimeout: 50000
+    transaction-aware: true
+

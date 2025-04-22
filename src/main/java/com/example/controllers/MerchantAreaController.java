@@ -1,0 +1,65 @@
+package com.example.controllers;
+
+import com.example.dao.Customer;
+import com.example.dao.Transaction;
+import com.example.services.CustomersService;
+import com.example.services.TransactionService;
+import io.micronaut.http.annotation.*;
+import io.micronaut.serde.annotation.Serdeable;
+import jakarta.annotation.security.PermitAll;
+import jakarta.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@PermitAll
+@Controller
+public class MerchantAreaController {
+
+    @Inject
+    CustomersService customersService;
+    TransactionService transactionService;
+
+    @Get("/merchant-area/customers")
+    public List<Customer> list() {
+        return customersService.list();
+    }
+
+    @Get("/merchant-area/customers/{id}")
+    public Customer find(@PathVariable int id) {
+        return customersService.find(id);
+    }
+
+    @Post("/merchant-area/customers/{id}")
+    public Customer find(@PathVariable int id, @Body CustomerInput input) {
+        return customersService.update(id, input.getName(), input.getSurname());
+    }
+    @Post("/merchant-area/customers/{id}/{points}")
+    public Customer update(@PathVariable int id, @PathVariable int points,@PathVariable int delta, @Body CustomerInput input) {
+        return customersService.update(id, points, delta,input.getName(), input.getSurname());
+    }
+    @Get("/merchant-area/transactions")
+    public List<Transaction> generallist() {
+        return transactionService.list();
+    }
+    //Retrieve transaction list for a specific customer
+    @Get("/merchant-area/customers/{id}/transactions")
+    public List<Transaction> transactionList(@PathVariable Long id) {
+        return transactionService.transactionList(id);
+    }
+
+    //Retrieve summary data: number of customers, total circulating points
+    /*@Get("/merchant-area/summary:/")
+    public Customer summary(@PathVariable int TotalCustomers, @PathVariable int TotalPoints){
+        return customersService.find(TotalCustomers,TotalPoints);
+    }*/
+
+
+    @Getter @Setter @Serdeable
+    static class CustomerInput {
+        String name;
+        String surname;
+        int points;
+    }
+}
