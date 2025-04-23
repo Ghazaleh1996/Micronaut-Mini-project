@@ -30,6 +30,11 @@ public class Customer {
     int points;
 
     @ManyToMany
+    @JoinTable(
+            name = "customer_merchant",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "merchant_id")
+    )
     Set<Merchant> purchasedmerchants;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

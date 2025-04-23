@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @PermitAll
 @Controller
@@ -52,11 +53,10 @@ public class MerchantAreaController {
     }
 
     //Retrieve summary data: number of customers, total circulating points
-    /*@Get("/merchant-area/summary:/")
-    public Customer summary(@PathVariable int TotalCustomers, @PathVariable int TotalPoints){
-        return customersService.find(TotalCustomers,TotalPoints);
-    }*/
-
+   @Get("/merchant-area/summary:/")
+   public Map<Integer, Integer> getSummaryMap() {
+       return customersService.getSummaryData();
+   }
 
     @Getter @Setter @Serdeable
     static class CustomerInput {

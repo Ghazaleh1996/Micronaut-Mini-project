@@ -22,7 +22,7 @@ public class Merchant {
     @Column
     String name;
 
-    @ManyToMany(mappedBy = "likedCourses")
+    @ManyToMany(mappedBy = "purchasedmerchants")
     Set<Customer> purchases;
 
 }
