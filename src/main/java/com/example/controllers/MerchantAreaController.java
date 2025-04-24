@@ -42,10 +42,7 @@ public class MerchantAreaController {
     public Customer update(@PathVariable int id, @Body CreateTransactionInput input) {
         return transactionService.createTx(id, input.getPoints());
     }
-    @Get("/merchant-area/transactions")
-    public List<Transaction> generallist() {
-        return transactionService.list();
-    }
+
     //Retrieve transaction list for a specific customer
     @Get("/merchant-area/customers/{id}/transactions")
     public List<Transaction> transactionList(@PathVariable Long id) {
@@ -54,7 +51,7 @@ public class MerchantAreaController {
 
     //Retrieve summary data: number of customers, total circulating points
    @Get("/merchant-area/summary:/")
-   public Map<Integer, Integer> getSummaryMap() {
+   public Map<String, Integer> getSummaryMap() {
        return customersService.getSummaryData();
    }
 
@@ -64,6 +61,10 @@ public class MerchantAreaController {
         String surname;
     }
 
+    // @Get("/merchant-area/transactions")
+    //    public List<Transaction> generallist() {
+    //        return transactionService.list();
+    //    }
     @Getter @Setter @Serdeable
     static class CreateTransactionInput {
         int points;

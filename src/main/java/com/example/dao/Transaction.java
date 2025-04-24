@@ -1,6 +1,7 @@
 package com.example.dao;
 import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Getter @Setter
-@Entity
+@MappedEntity("transaction")
 @Table(name = "transaction")
 @Introspected
 @GenerateProxy

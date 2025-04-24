@@ -58,7 +58,7 @@ public class CustomersService {
 
     //Retrieve summary data: number of customers, total circulating points
     @Transactional
-    public Map<Integer,Integer> getSummaryData(){
+    public Map<String,Integer> getSummaryData(){
         Long totalCustomers =em.createQuery("SELECT count(c) FROM Customer c", Long.class)
                 .getSingleResult();
         Long totalPoints = em.createQuery("SELECT SUM(c.points) FROM Customer c", Long.class)
