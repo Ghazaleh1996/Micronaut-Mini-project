@@ -18,26 +18,16 @@ public class MerchantService {
     EntityManager em;
     //Retrieve point balance and personal data
     @Transactional
-    public Map<String, Integer> getCustomerInfo() {
-
-        List<Customer> customerList =em.createQuery("SELECT * FROM Customer c", Customer.class)
-                .getResultList();
-        Long totalPoints = em.createQuery("SELECT SUM(c.points) FROM Customer c", Long.class)
+    public Customer getCustomerInfo(int customerId) {
+        return em
+                .createQuery("SELECT c FROM Customer c WHERE c.id = :customerId", Customer.class)
+                .setParameter("customerId", customerId)
                 .getSingleResult();
-
-        Map<String, Integer> customerInfo = new HashMap<>();
-        for (Customer customer : customerList) {
-
-            customerInfo.put("totalPoints", totalPoints.intValue());
-            customerInfo.("customerInfo", customer);
-
-            return customerInfo;
-        }
     }
     //Retrieve transaction history
     @Transactional
     public List<Transaction> historyList(){
-            List<Transaction> transactionHistory =em.createQuery("Select t.timestamp , t.points From Transaction t",Transaction.class)
+            List<Transaction> transactionHistory =em.createQuery("Select t From Transaction t",Transaction.class)
                     .getResultList();
             return transactionHistory;
     }
@@ -51,10 +41,15 @@ public class MerchantService {
         log.debug("updated", customerId);
         return customer;
     }
+
+    //Sign up
     @Transactional
-    public Customer signUp(int customerId, String name, String surname) {
-        var customer =em.find(Customer.class, customerId)
-                        .equals("INSERT INTO customer (name, surname) values (:name, :surname)", Customer.class);
-        
+    public Customer signUp(String name, String surname) {
+        var customer = new Customer();
+        customer.setName(name);
+        customer.setSurname(surname);
+        customer.setPoints(0);
+        em.persist(customer);
+        return customer;
     }
 }

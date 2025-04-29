@@ -1,30 +1,60 @@
 micronaut:
   application:
     name: demo
+  server:
+    port: 8080
   security:
     authentication: session
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: University Of Messina
+
+
+
+      endpoints:
+        /customers-area/*:
+          enabled: true
+          sensitive: true
+        /merchant-area/* :
+          enabled: true
+          sensitive: true
+        login:
+          post-content-types:
+          enabled:
+          path:
+
 jpa:
   default:
     packages-to-scan:
-      - com.example.repository
+      - com.example
+    entity-scan:
+      packages:
+        - com.example
     properties:
       hibernate:
         hbm2ddl:
           auto: update
-    entity-scan:
-      packages: com.example
+        show_sql: true
+        format_sql: true
+
 datasources:
-default:
-  url: jdbc:mysql://localhost/loyalty?rewriteBatchedStatements=true&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&useCompression=true&autoReconnect=true&serverTimezone=Europe/Rome&allowPublicKeyRetrieval=true
-  db-type: mysql
-  username: fidelity
-  password: test123
-  minimumIdle: 0
-  maximumPoolSize: 5
-  connectionTimeout: 50000
-  maxLifetime: 300000
-  idleTimeout: 30000
-  validationTimeout: 50000
-  transaction-aware: true
+  default:
+    url: jdbc:mysql://localhost:3306/loyalty?rewriteBatchedStatements=true&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&useCompression=true&autoReconnect=true&serverTimezone=Europe/Rome&allowPublicKeyRetrieval=true
+    db-type: mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ""  # Replace with real password if needed
+    minimumIdle: 0
+    maximumPoolSize: 5
+    connectionTimeout: 50000
+    maxLifetime: 300000
+    idleTimeout: 30000
+    validationTimeout: 50000
+    transaction-aware: true
+
+
 
 

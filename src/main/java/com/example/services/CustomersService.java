@@ -2,10 +2,13 @@ package com.example.services;
 
 import com.example.dao.Customer;
 import com.example.dao.Transaction;
+import io.micronaut.serde.annotation.Serdeable;
 import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -58,18 +61,32 @@ public class CustomersService {
 
     //Retrieve summary data: number of customers, total circulating points
     @Transactional
-    public Map<String,Integer> getSummaryData(){
+    public SummaryDTO getSummaryData(){
         Long totalCustomers =em.createQuery("SELECT count(c) FROM Customer c", Long.class)
                 .getSingleResult();
         Long totalPoints = em.createQuery("SELECT SUM(c.points) FROM Customer c", Long.class)
                 .getSingleResult();
 
-        Map<String, Integer> summary = new HashMap<>();
-        summary.put("customerCount", totalCustomers.intValue());
-        summary.put("totalPoints", totalPoints.intValue());
-
-        return summary;
+        var dto = new SummaryDTO();
+        dto.setCustomerCount(totalCustomers.intValue());
+        dto.setTotalPoints(totalPoints.intValue());
+        return dto;
     }
+
+    @Transactional
+    public Customer findByUsername(String username) {
+        return em.createQuery("SELECT c FROM Customer c WHERE c.username = :username", Customer.class)
+                .setParameter("username", username)
+                .getSingleResult();
+    }
+
+    @Getter @Setter @Serdeable
+    public static class SummaryDTO {
+        long customerCount;
+        long totalPoints;
+    }
+
+    //Add/remove points from a customer
     @Transactional
     public Customer summary(int customerId, int points) {
         var customer=em.find(Customer.class, customerId);
@@ -78,7 +95,7 @@ public class CustomersService {
         em.merge(customer);
         var tx = new Transaction();
         tx.setCustomer(customer);
-        tx.setPoints(points);
+        //tx.setPoints(points);
         em.persist(tx);
         log.debug("updated customer points {}",customerId);
         return customer;

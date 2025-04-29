@@ -18,7 +18,7 @@ public class TransactionService {
     EntityManager em;
 
     @Transactional
-    public List<Transaction> list() {
+    public List<Transaction> list(int customerId) {
         return em
                 .createQuery("SELECT t FROM Transaction t", Transaction.class)
                 .getResultList();

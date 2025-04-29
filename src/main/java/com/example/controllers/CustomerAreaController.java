@@ -5,7 +5,12 @@ import com.example.dao.Transaction;
 import com.example.services.CustomersService;
 import com.example.services.MerchantService;
 import com.example.services.TransactionService;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.authentication.AuthenticationResponse;
+import io.micronaut.security.authentication.ServerAuthentication;
+import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
@@ -17,7 +22,8 @@ import java.util.Map;
 
 
 @PermitAll
-@Controller
+@Controller("/customer-area")
+
 public class CustomerAreaController {
     @Inject
     MerchantService merchantService;
@@ -27,29 +33,37 @@ public class CustomerAreaController {
     TransactionService transactionService;
 
     //Retrieve point balance and personal data
-    @Get("/customer-area/customer-info")
-    public Map<String, Integer> getCustomerMap() {
-        return merchantService.getCustomerInfo();
+    //@Secured(SecurityRule.IS_AUTHENTICATED)
+    @Get("/customer-info")
+    public Customer getCustomerMap(HttpRequest request) {
+        var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
+        var customer = customersService.findByUsername(username);
+        //return merchantService.getCustomerInfo(customer.getId());
+        return customer;
     }
 
     //Retrieve transaction history
-    @Get("/customer-area/history")
-    public List<Transaction> historyList() {
-        return transactionService.list();
+    //@Secured(SecurityRule.IS_AUTHENTICATED)
+    @Get("/history")
+    public List<Transaction> historyList(HttpRequest<?> request) {
+        var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
+        var customer = customersService.findByUsername(username);
+        return transactionService.list(customer.getId());
     }
 
-
-
     //Edit personal data
-    @Post("/customer-area/edit-personal-data")
-    public Customer editPersonalData(@PathVariable int id, @Body CustomerInput input) {
-        return customersService.update(id, input.getName(), input.getSurname());
+   // @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Post("/customer/editPersonal")
+    public Customer editPersonalData(HttpRequest<?> request, @Body CustomerInput input) {
+        var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
+        var customer = customersService.findByUsername(username);
+        return customersService.update(customer.getId(), input.getName(), input.getSurname());
     }
 
     //Sign up
-    @Post("/customer-area/Sign-Up")
-    public Customer signUp(@PathVariable int id, @Body CustomerInput input) {
-        return customersService.update(id, input.getName(), input.getSurname());
+    @Post("/Sign-Up")
+    public Customer signUp(@Body CustomerInput input) {
+        return merchantService.signUp(input.getName(), input.getSurname());
     }
 
 

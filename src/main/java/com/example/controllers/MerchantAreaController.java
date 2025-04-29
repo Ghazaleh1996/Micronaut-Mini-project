@@ -5,6 +5,7 @@ import com.example.dao.Transaction;
 import com.example.services.CustomersService;
 import com.example.services.TransactionService;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @PermitAll
-@Controller
+@Controller("/merchant-area")
 public class MerchantAreaController {
 
     @Inject
@@ -24,34 +25,40 @@ public class MerchantAreaController {
     @Inject
     TransactionService transactionService;
 
-    @Get("/merchant-area/customers")
+    @Get("/customers")
     public List<Customer> list() {
         return customersService.list();
     }
-
-    @Get("/merchant-area/customers/{id}")
+    @Secured("Merchant")
+    @Get("/customers/{id}")
     public Customer find(@PathVariable int id) {
         return customersService.find(id);
     }
 
-    @Post("/merchant-area/customers/{id}")
+    @Secured("Merchant")
+    @Post("/customers/{id}")
     public Customer find(@PathVariable int id, @Body CustomerInput input) {
         return customersService.update(id, input.getName(), input.getSurname());
     }
-    @Post("/merchant-area/customers/{id}/points")
+    @Secured("Merchant")
+    //Add/remove points from a customer
+    @Post("/customers/{id}/points")
     public Customer update(@PathVariable int id, @Body CreateTransactionInput input) {
         return transactionService.createTx(id, input.getPoints());
     }
 
+    //@Secured("Merchant")
     //Retrieve transaction list for a specific customer
-    @Get("/merchant-area/customers/{id}/transactions")
+    @Get("/customers/{id}/transactions")
     public List<Transaction> transactionList(@PathVariable Long id) {
         return transactionService.transactionList(id);
     }
 
+
     //Retrieve summary data: number of customers, total circulating points
-   @Get("/merchant-area/summary:/")
-   public Map<String, Integer> getSummaryMap() {
+    //@Secured("Merchant")
+   @Get("/summary")
+   public CustomersService.SummaryDTO getSummaryData() {
        return customersService.getSummaryData();
    }
 

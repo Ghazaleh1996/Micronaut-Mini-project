@@ -12,17 +12,18 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Getter @Setter
-@MappedEntity("transaction")
+//@MappedEntity("transaction")
 @Table(name = "transaction")
 @Introspected
 @GenerateProxy
 @Serdeable
+@Entity
 public class Transaction {
     @Id
     int id;
 
     @Column
-    int points;
+   Integer points;
 
     @CreationTimestamp
     @Column

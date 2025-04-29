@@ -1,5 +1,6 @@
 package com.example.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.configuration.hibernate.jpa.proxy.GenerateProxy;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.MappedEntity;
@@ -13,13 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 @Getter @Setter
-@MappedEntity("customer")
+//@MappedEntity("customer")
 @Table(name = "customer")
 @Introspected
 @GenerateProxy
 @Serdeable
+@Entity
 public class Customer {
     @Id
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column
@@ -28,8 +31,15 @@ public class Customer {
     @Column
     String surname;
     @Column
-    int points;
+    Integer points = 0;
 
+    @Column
+    String username;
+    @Column
+    String password;
+
+    @Serdeable.Serializable
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "customer_merchant",
@@ -38,6 +48,9 @@ public class Customer {
     )
     Set<Merchant> purchasedmerchants;
 
+
+    @Serdeable.Serializable
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 

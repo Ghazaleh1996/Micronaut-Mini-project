@@ -11,11 +11,12 @@ import lombok.Setter;
 import java.util.Set;
 
 @Getter @Setter
-@MappedEntity("merchant")
+//@MappedEntity("merchant")
 @Table(name = "merchant")
 @Introspected
 @GenerateProxy
 @Serdeable
+@Entity
 public class Merchant {
     @Id
     int id;
