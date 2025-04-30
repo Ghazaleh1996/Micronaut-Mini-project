@@ -4,27 +4,15 @@ micronaut:
   server:
     port: 8080
   security:
-    authentication: session
+    enabled: true
+    authentication: bearer
     token:
       jwt:
+        enabled: true
         signatures:
           secret:
             generator:
-              secret: University Of Messina
-
-
-
-      endpoints:
-        /customers-area/*:
-          enabled: true
-          sensitive: true
-        /merchant-area/* :
-          enabled: true
-          sensitive: true
-        login:
-          post-content-types:
-          enabled:
-          path:
+              secret: this-is-a-very-strong-secret-key-12345678
 
 jpa:
   default:

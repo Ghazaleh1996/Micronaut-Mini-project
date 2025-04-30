@@ -23,7 +23,6 @@ import java.util.Map;
 
 @PermitAll
 @Controller("/customer-area")
-
 public class CustomerAreaController {
     @Inject
     MerchantService merchantService;
