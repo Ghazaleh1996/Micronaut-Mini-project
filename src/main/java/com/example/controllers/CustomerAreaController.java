@@ -32,7 +32,7 @@ public class CustomerAreaController {
     TransactionService transactionService;
 
     //Retrieve point balance and personal data
-    //@Secured(SecurityRule.IS_AUTHENTICATED)
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get("/customer-info")
     public Customer getCustomerMap(HttpRequest request) {
         var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
@@ -42,7 +42,7 @@ public class CustomerAreaController {
     }
 
     //Retrieve transaction history
-    //@Secured(SecurityRule.IS_AUTHENTICATED)
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get("/history")
     public List<Transaction> historyList(HttpRequest<?> request) {
         var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
@@ -51,7 +51,7 @@ public class CustomerAreaController {
     }
 
     //Edit personal data
-   // @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     @Post("/customer/editPersonal")
     public Customer editPersonalData(HttpRequest<?> request, @Body CustomerInput input) {
         var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();

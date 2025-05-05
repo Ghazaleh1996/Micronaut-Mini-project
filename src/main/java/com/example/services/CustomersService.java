@@ -11,9 +11,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
+import io.micronaut.scheduling.annotation.Scheduled;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+
 
 @Singleton
 @Slf4j
@@ -100,4 +101,33 @@ public class CustomersService {
         log.debug("updated customer points {}",customerId);
         return customer;
     }
+
+    @Scheduled(cron = "0 0 0 1 1 *")
+    @Transactional
+    public void resetAllCustomerPoints() {
+        int updated = em.createQuery("UPDATE Customer c SET c.points = 0")
+                .executeUpdate();
+        log.info("Reset points on January 1st. Total updated: " + updated);
+
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
+    public void rewardBirthdayCustomers() {
+        var today = LocalDate.now();
+
+        List<Customer> customers = em.createQuery("SELECT c FROM Customer c", Customer.class)
+                .getResultList();
+        for (Customer c : customers) {
+            if (c.getBirthday() != null &&
+                    c.getBirthday().getMonthValue() == today.getMonthValue() &&
+                    c.getBirthday().getDayOfMonth() == today.getDayOfMonth()) {
+
+                c.setPoints(c.getPoints() + 10);
+                em.merge(c);
+                log.info(" Birthday points added to: {}", c.getUsername());
+            }
+        }
+    }
+
 }
