@@ -20,9 +20,6 @@ dependencies {
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.data:micronaut-data-processor")
-    runtimeOnly("mysql:mysql-connector-java")
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut.data:micronaut-data-tx-hibernate")
     implementation("io.micronaut.security:micronaut-security")
     implementation("io.micronaut.security:micronaut-security-session")
@@ -32,10 +29,16 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-hibernate-jpa")
     implementation 'io.micronaut.data:micronaut-data-hibernate-jpa'
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation ("org.hibernate.validator:hibernate-validator:8.0.0.Final")
+    implementation ("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation ("org.glassfish:jakarta.el:4.0.2")
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("org.yaml:snakeyaml")
+    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly("ch.qos.logback:logback-classic")
     // testImplementation("io.micronaut:micronaut-http-client")
 }
 

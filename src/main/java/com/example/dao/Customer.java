@@ -6,7 +6,12 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,18 +31,26 @@ public class Customer {
     int id;
 
     @Column
+    @NotNull(message="name can not be null")
     String name;
 
     @Column
+    @NotNull
     String surname;
     @Column
+    @NotNull
+    @Past
     private LocalDate birthday;
     @Column
+    @PositiveOrZero
     Integer points = 0;
 
     @Column
+    @NotNull
+    @NotBlank
     String username;
     @Column
+    @NotNull
     String password;
 
 

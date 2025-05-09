@@ -5,6 +5,7 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,7 @@ public class Merchant {
     int id;
 
     @Column
+    @NotNull
     String name;
 
     @ManyToMany(mappedBy = "purchasedmerchants")
