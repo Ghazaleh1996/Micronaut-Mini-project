@@ -4,6 +4,7 @@ import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
@@ -21,11 +22,13 @@ import java.util.List;
 @Serdeable
 @Entity
 public class Transaction {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column
-    @PositiveOrZero
+    @NotNull
     Integer points;
 
     @CreationTimestamp

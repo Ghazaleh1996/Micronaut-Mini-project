@@ -14,6 +14,9 @@ import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -61,7 +64,7 @@ public class CustomerAreaController {
 
     //Sign up
     @Post("/Sign-Up")
-    public Customer signUp(@Body CustomerInput input) {
+    public Customer signUp(@Body @Valid CustomerInput input) {
         return merchantService.signUp(input.getName(), input.getSurname());
     }
 
@@ -72,7 +75,10 @@ public class CustomerAreaController {
     }
     @Getter @Setter @Serdeable
     static class CustomerInput {
+        @NotBlank @Size(min = 3, max = 50)
         String name;
+
+        @NotBlank
         String surname;
     }
 }

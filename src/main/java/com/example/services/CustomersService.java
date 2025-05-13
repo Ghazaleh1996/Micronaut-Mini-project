@@ -2,6 +2,9 @@ package com.example.services;
 
 import com.example.dao.Customer;
 import com.example.dao.Transaction;
+import io.micronaut.cache.annotation.CacheConfig;
+import io.micronaut.cache.annotation.CachePut;
+import io.micronaut.cache.annotation.Cacheable;
 import io.micronaut.serde.annotation.Serdeable;
 import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
@@ -18,12 +21,14 @@ import java.util.List;
 
 @Singleton
 @Slf4j
+
 public class CustomersService {
 
     @PersistenceContext
     EntityManager em;
 
     @Transactional
+
     public List<Customer> list() {
         return em
             .createQuery("SELECT c FROM Customer c", Customer.class)
@@ -31,6 +36,7 @@ public class CustomersService {
     }
 
     @Transactional
+
     public Customer find(int id) {
         return em
             .createQuery("SELECT c FROM Customer c WHERE c.id = :customerId", Customer.class)
@@ -39,6 +45,7 @@ public class CustomersService {
     }
 
     @Transactional
+
     public Customer update(int customerId, String name, String surname) {
         var customer = em.find(Customer.class, customerId);
         customer.setName(name);
@@ -49,6 +56,7 @@ public class CustomersService {
     }
 
     @Transactional
+
     public Customer update(int id, int points,int delta,String name, String surname) {
         var customer=em.find(Customer.class, id);
         customer.setName(name);
@@ -62,6 +70,7 @@ public class CustomersService {
 
     //Retrieve summary data: number of customers, total circulating points
     @Transactional
+
     public SummaryDTO getSummaryData(){
         Long totalCustomers =em.createQuery("SELECT count(c) FROM Customer c", Long.class)
                 .getSingleResult();
@@ -75,6 +84,7 @@ public class CustomersService {
     }
 
     @Transactional
+
     public Customer findByUsername(String username) {
         return em.createQuery("SELECT c FROM Customer c WHERE c.username = :username", Customer.class)
                 .setParameter("username", username)
@@ -89,6 +99,7 @@ public class CustomersService {
 
     //Add/remove points from a customer
     @Transactional
+
     public Customer summary(int customerId, int points) {
         var customer=em.find(Customer.class, customerId);
         int newPoints= customer.getPoints()+points;

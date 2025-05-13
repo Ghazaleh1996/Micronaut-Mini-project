@@ -40,7 +40,7 @@ public class MerchantAreaController {
     public Customer find(@PathVariable int id, @Body CustomerInput input) {
         return customersService.update(id, input.getName(), input.getSurname());
     }
-    @Secured("Merchant")
+    //@Secured("Merchant")
     //Add/remove points from a customer
     @Post("/customers/{id}/points")
     public Customer update(@PathVariable int id, @Body CreateTransactionInput input) {

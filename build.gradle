@@ -18,6 +18,8 @@ dependencies {
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    implementation("io.micronaut.cache:micronaut-cache-caffeine")
+    implementation("io.micronaut.cache:micronaut-cache-core")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut.data:micronaut-data-tx-hibernate")

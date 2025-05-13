@@ -1,4 +1,7 @@
 micronaut:
+  cashes:
+    headlines:
+      charset: 'UTF-8'
   application:
     name: demo
   server:

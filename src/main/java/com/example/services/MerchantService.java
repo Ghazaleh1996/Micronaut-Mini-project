@@ -1,6 +1,9 @@
 package com.example.services;
 import com.example.dao.Customer;
 import com.example.dao.Transaction;
+import io.micronaut.cache.annotation.CacheConfig;
+import io.micronaut.cache.annotation.CachePut;
+import io.micronaut.cache.annotation.Cacheable;
 import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,11 +16,13 @@ import java.util.Map;
 
 @Singleton
 @Slf4j
+
 public class MerchantService {
     @PersistenceContext
     EntityManager em;
     //Retrieve point balance and personal data
     @Transactional
+
     public Customer getCustomerInfo(int customerId) {
         return em
                 .createQuery("SELECT c FROM Customer c WHERE c.id = :customerId", Customer.class)
@@ -26,6 +31,7 @@ public class MerchantService {
     }
     //Retrieve transaction history
     @Transactional
+
     public List<Transaction> historyList(){
             List<Transaction> transactionHistory =em.createQuery("Select t From Transaction t",Transaction.class)
                     .getResultList();
@@ -33,6 +39,7 @@ public class MerchantService {
     }
     //Edit personal data
     @Transactional
+
     public Customer editPersonalData(int customerId, String name, String surname) {
         var customer = em.find(Customer.class, customerId);
         customer.setName(name);
@@ -44,6 +51,7 @@ public class MerchantService {
 
     //Sign up
     @Transactional
+
     public Customer signUp(String name, String surname) {
         var customer = new Customer();
         customer.setName(name);
