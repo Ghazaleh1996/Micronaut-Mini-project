@@ -5,7 +5,22 @@ micronaut:
   application:
     name: demo
   server:
-    port: 8080
+    cors:
+      enabled: true
+      configurations:
+        all:
+          allowed-origins:
+            - "*"
+          allowed-methods :
+            -POST
+            -GET
+            -PUT
+            -DELETE
+            -OPTION
+          allowed-headers:
+            -Content-Type
+            -Authorization
+
   security:
     enabled: true
     authentication: bearer
