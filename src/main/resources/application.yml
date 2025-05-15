@@ -8,22 +8,22 @@ micronaut:
     cors:
       enabled: true
       configurations:
-        default:
+        web:
           allowed-origins:
-            - "*"
-          allowed-methods :
-            -POST
-            -GET
-            -PUT
-            -DELETE
-            -OPTIONS
+            - "http://localhost:5000"
+          allowed-methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
           allowed-headers:
-
-            - "*"
-
-          exposedHeaders:
-            -Authorization
-          allowCredentials: true
+            - "Content-Type"
+            - "Authorization"
+            - "Accept"
+          exposed-headers:
+            - "Authorization"
+          allow-credentials: true
 
   security:
     enabled: true

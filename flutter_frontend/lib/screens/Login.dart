@@ -27,15 +27,15 @@ class _LoginState extends State<Login> {
       errorMessage = null;
     });
 
-    final url = Uri.parse('http://127.0.0.1:8080/login2');
+    final url = Uri.parse('http://localhost:8080/login2');
 
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json','Accept': 'application/json',},
         body: json.encode({
-          "identity": usernameController.text.trim(),
-          "secret": passwordController.text.trim(),
+          "username": usernameController.text.trim(),
+          "password": passwordController.text.trim(),
         }),
       );
 
@@ -200,8 +200,8 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-        ),
       ),
-    );
-  }
+      ),
+      );
+    }
 }

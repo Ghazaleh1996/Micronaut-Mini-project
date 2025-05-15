@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'screens/customer_dashboard.dart';
+import 'screens/merchant_dashboard.dart';
 import 'screens/Login.dart';
 import 'screens/Register.dart';
 void main() {
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => MyHomePage(title: 'Micronaut',),
         '/login': (context) => Login(),
         '/register': (context) => Register(),
+        '/customer_dashboard': (context) => CustomerDashboard(),
+        '/merchant_dashboard': (context) => MerchantDashboard(),
       },
       theme: ThemeData(
         // This is the theme of your application.

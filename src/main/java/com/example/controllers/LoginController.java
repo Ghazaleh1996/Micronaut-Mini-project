@@ -9,6 +9,7 @@ import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationResponse;
@@ -32,6 +33,7 @@ public class LoginController {
     CustomersService customersService;
 
     @PermitAll
+    @CrossOrigin
     @Post("/login2")
     public Object login(@Body UsernamePasswordCredentials creds, HttpRequest<?> request) {
         var resp = authenticate(creds);
@@ -42,15 +44,16 @@ public class LoginController {
         }
     }
 
-    @PermitAll
+    //@PermitAll
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     @Get("/whoami")
     public String whoami(Authentication auth) {
         return auth.getName();
     }
 
     private AuthenticationResponse authenticate(@Body UsernamePasswordCredentials creds) {
-        Customer customer = customersService.findByUsername(creds.getUsername());
-        if (customer != null && customer.getPassword().equals(creds.getPassword())) {
+        Customer customer = customersService.findByUsername(creds.getUsername().toLowerCase().trim());
+        if (customer != null && customer.getPassword().trim().equals(creds.getPassword().trim())) {
             return AuthenticationResponse.success(customer.getUsername(), List.of("ROLE_CUSTOMER"));
         }
 

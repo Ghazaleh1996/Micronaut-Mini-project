@@ -84,11 +84,11 @@ public class CustomersService {
     }
 
     @Transactional
-
     public Customer findByUsername(String username) {
-        return em.createQuery("SELECT c FROM Customer c WHERE c.username = :username", Customer.class)
-                .setParameter("username", username)
-                .getSingleResult();
+        List<Customer> results = em.createQuery("SELECT c FROM Customer c WHERE LOWER(c.username) = :username", Customer.class)
+                .setParameter("username", username.toLowerCase().trim())
+                .getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     @Getter @Setter @Serdeable

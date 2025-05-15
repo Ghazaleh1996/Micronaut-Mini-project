@@ -25,7 +25,7 @@ class _CustomerDashboardState extends State<CustomerDashboard> {
     final token = prefs.getString('jwt_token');
 
     final response = await http.get(
-      Uri.parse('http://127.0.0.1:8080/whoami'),
+      Uri.parse('http://localhost:8080/whoami'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

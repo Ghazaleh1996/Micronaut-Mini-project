@@ -41,7 +41,7 @@ public class Customer {
     @Column
     Integer points;
 
-    @Column
+    @Column(name = "username")
     String username;
 
     @Column
