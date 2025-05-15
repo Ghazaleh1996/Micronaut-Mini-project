@@ -76,4 +76,5 @@ public class MerchantAreaController {
     static class CreateTransactionInput {
         int points;
     }
+
 }

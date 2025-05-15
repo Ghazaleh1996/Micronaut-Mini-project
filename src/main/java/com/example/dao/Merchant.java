@@ -25,6 +25,12 @@ public class Merchant {
     @Column
     @NotNull
     String name;
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
 
     @ManyToMany(mappedBy = "purchasedmerchants")
     Set<Customer> purchases;

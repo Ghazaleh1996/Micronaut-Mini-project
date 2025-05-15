@@ -8,7 +8,7 @@ micronaut:
     cors:
       enabled: true
       configurations:
-        all:
+        default:
           allowed-origins:
             - "*"
           allowed-methods :
@@ -16,10 +16,14 @@ micronaut:
             -GET
             -PUT
             -DELETE
-            -OPTION
+            -OPTIONS
           allowed-headers:
-            -Content-Type
+
+            - "*"
+
+          exposedHeaders:
             -Authorization
+          allowCredentials: true
 
   security:
     enabled: true

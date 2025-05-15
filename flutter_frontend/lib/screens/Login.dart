@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'customer_dashboard.dart';
+import 'merchant_dashboard.dart';
+
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -31,20 +34,42 @@ class _LoginState extends State<Login> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
-          "username": usernameController.text.trim(),
-          "password": passwordController.text.trim(),
+          "identity": usernameController.text.trim(),
+          "secret": passwordController.text.trim(),
         }),
       );
-
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final token = data['access_token'];
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('jwt_token', token);
+        final roles = data['roles'] as List<dynamic>?;
 
-        print('Login Success: $data');
-        Navigator.pushReplacementNamed(context, '/');
+        if (token != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('jwt_token', token);
+
+          print('Login Success: $data');
+
+          if (roles != null && roles.contains('ROLE_CUSTOMER')) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const CustomerDashboard()),
+            );
+          } else if (roles != null && roles.contains('ROLE_MERCHANT')) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const MerchantDashboard()),
+            );
+          } else {
+            setState(() {
+              errorMessage = "Unrecognized role in token.";
+            });
+          }
+        } else {
+          setState(() {
+            errorMessage = "No token received.";
+          });
+        }
       } else {
         print('Login failed: ${response.body}');
         setState(() {
@@ -70,7 +95,7 @@ class _LoginState extends State<Login> {
 
 
 
-  @override
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),

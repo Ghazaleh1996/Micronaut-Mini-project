@@ -1,7 +1,9 @@
 package com.example.controllers;
 
 import com.example.dao.Customer;
+import com.example.dao.Merchant;
 import com.example.services.CustomersService;
+import com.example.services.MerchantService;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -23,6 +25,8 @@ public class LoginController {
 
     @Inject
     LoginHandler loginHandler;
+    @Inject
+    MerchantService merchantService;
 
     @Inject
     CustomersService customersService;
@@ -49,6 +53,13 @@ public class LoginController {
         if (customer != null && customer.getPassword().equals(creds.getPassword())) {
             return AuthenticationResponse.success(customer.getUsername(), List.of("ROLE_CUSTOMER"));
         }
-        return AuthenticationResponse.failure("Error");
+
+        Merchant merchant = merchantService.findByUsername(creds.getUsername());
+        if (merchant != null && merchant.getPassword().equals(creds.getPassword())) {
+            return AuthenticationResponse.success(merchant.getUsername(), List.of("ROLE_MERCHANT"));
+        }
+
+        return AuthenticationResponse.failure("Invalid credentials");
     }
 }
+

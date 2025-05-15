@@ -1,5 +1,6 @@
 package com.example.services;
 import com.example.dao.Customer;
+import com.example.dao.Merchant;
 import com.example.dao.Transaction;
 import io.micronaut.cache.annotation.CacheConfig;
 import io.micronaut.cache.annotation.CachePut;
@@ -59,5 +60,14 @@ public class MerchantService {
         customer.setPoints(0);
         em.persist(customer);
         return customer;
+    }
+    @Transactional
+    public Merchant findByUsername(String username) {
+        var query = em.createQuery(
+                "SELECT m FROM Merchant m WHERE m.username = :username", Merchant.class);
+        query.setParameter("username", username);
+
+        var resultList = query.getResultList();
+        return resultList.isEmpty() ? null : resultList.get(0);
     }
 }
