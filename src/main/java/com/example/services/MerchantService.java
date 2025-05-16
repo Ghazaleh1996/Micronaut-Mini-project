@@ -52,11 +52,13 @@ public class MerchantService {
 
     //Sign up
     @Transactional
-
-    public Customer signUp(String name, String surname) {
+    public Customer signUp(String name, String surname,String username, String password, String email) {
         var customer = new Customer();
         customer.setName(name);
         customer.setSurname(surname);
+        customer.setUsername(username);
+        customer.setEmail(email);
+        customer.setPassword(password);
         customer.setPoints(0);
         em.persist(customer);
         return customer;

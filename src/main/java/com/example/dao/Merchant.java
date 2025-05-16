@@ -20,7 +20,10 @@ import java.util.Set;
 @Entity
 public class Merchant {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @Column
+    String email;
 
     @Column
     @NotNull

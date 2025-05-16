@@ -7,6 +7,7 @@ import com.example.services.MerchantService;
 import com.example.services.TransactionService;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.annotation.*;
+import io.micronaut.http.server.cors.CrossOrigin;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.authentication.ServerAuthentication;
@@ -59,14 +60,23 @@ public class CustomerAreaController {
     public Customer editPersonalData(HttpRequest<?> request, @Body CustomerInput input) {
         var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
         var customer = customersService.findByUsername(username);
-        return customersService.update(customer.getId(), input.getName(), input.getSurname());
+        return customersService.update(customer.getId(), input.getName(), input.getUsername());
     }
 
     //Sign up
     @Post("/Sign-Up")
+    @CrossOrigin
+    @Secured(SecurityRule.IS_ANONYMOUS)
     public Customer signUp(@Body @Valid CustomerInput input) {
-        return merchantService.signUp(input.getName(), input.getSurname());
+        return merchantService.signUp(
+                input.getName(),
+                input.getSurname(),
+                input.getEmail(),
+                input.getPassword(),
+                input.getUsername()
+        );
     }
+
 
 
     @Getter @Setter @Serdeable
@@ -80,5 +90,13 @@ public class CustomerAreaController {
 
         @NotBlank
         String surname;
+
+        @NotBlank
+        String email;
+        @NotBlank
+        String username;
+        @NotBlank
+        String password;
+
     }
 }

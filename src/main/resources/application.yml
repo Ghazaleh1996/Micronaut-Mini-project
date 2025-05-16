@@ -8,7 +8,7 @@ micronaut:
     cors:
       enabled: true
       configurations:
-        web:
+        default:
           allowed-origins:
             - "http://localhost:5000"
           allowed-methods:
@@ -27,6 +27,19 @@ micronaut:
 
   security:
     enabled: true
+    intercept-url-map:
+      - pattern: /customer-area/Sign-Up
+        http-method: POST
+        access:
+          - isAnonymous()
+      - pattern: /merchant-area/Sign-Up
+        http-method: POST
+        access:
+          - isAnonymous()
+      - pattern: /customer-area/Sign-Up
+        http-method: POST
+        access:
+          - isAnonymous()
     authentication: bearer
     token:
       jwt:

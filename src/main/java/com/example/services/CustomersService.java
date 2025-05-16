@@ -1,6 +1,7 @@
 package com.example.services;
 
 import com.example.dao.Customer;
+import com.example.dao.Merchant;
 import com.example.dao.Transaction;
 import io.micronaut.cache.annotation.CacheConfig;
 import io.micronaut.cache.annotation.CachePut;
@@ -89,6 +90,18 @@ public class CustomersService {
                 .setParameter("username", username.toLowerCase().trim())
                 .getResultList();
         return results.isEmpty() ? null : results.get(0);
+    }
+
+
+    @Transactional
+    public Merchant signUp(String name, String username, String password, String email) {
+        var merchant = new Merchant();
+        merchant.setName(name);
+        merchant.setUsername(username);
+        merchant.setEmail(email);
+        merchant.setPassword(password);
+        em.persist(merchant);
+        return merchant;
     }
 
     @Getter @Setter @Serdeable

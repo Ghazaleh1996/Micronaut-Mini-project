@@ -32,6 +32,9 @@ public class Customer {
     String name;
 
     @Column
+    String email;
+
+    @Column
     @NotNull
     String surname;
 
