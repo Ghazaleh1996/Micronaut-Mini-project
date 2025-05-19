@@ -51,7 +51,7 @@ public class CustomerAreaController {
     public List<Transaction> historyList(HttpRequest<?> request) {
         var username = ((ServerAuthentication) request.getUserPrincipal().get()).getName();
         var customer = customersService.findByUsername(username);
-        return transactionService.list(customer.getId());
+        return transactionService.transactionList((long) customer.getId());
     }
 
     //Edit personal data

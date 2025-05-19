@@ -38,6 +38,7 @@ public class MerchantAreaController {
     public List<Customer> list() {
         return customersService.list();
     }
+
     @Secured("Merchant")
     @Get("/customers/{id}")
     public Customer find(@PathVariable int id) {
@@ -49,14 +50,14 @@ public class MerchantAreaController {
     public Customer find(@PathVariable int id, @Body CustomerInput input) {
         return customersService.update(id, input.getName(), input.getSurname());
     }
-    //@Secured("Merchant")
+    @Secured("Merchant")
     //Add/remove points from a customer
     @Post("/customers/{id}/points")
     public Customer update(@PathVariable int id, @Body CreateTransactionInput input) {
         return transactionService.createTx(id, input.getPoints());
     }
 
-    //@Secured("Merchant")
+    @Secured("Merchant")
     //Retrieve transaction list for a specific customer
     @Get("/customers/{id}/transactions")
     public List<Transaction> transactionList(@PathVariable Long id) {

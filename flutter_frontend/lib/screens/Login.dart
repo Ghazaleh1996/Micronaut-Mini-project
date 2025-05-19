@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/customer_home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +54,7 @@ class _LoginState extends State<Login> {
           if (roles != null && roles.contains('ROLE_CUSTOMER')) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const CustomerDashboard()),
+              MaterialPageRoute(builder: (context) => const CustomerHomeScreen()),
             );
           } else if (roles != null && roles.contains('ROLE_MERCHANT')) {
             Navigator.pushReplacement(

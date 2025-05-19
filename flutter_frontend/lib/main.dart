@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/customer_home_screen.dart';
 import 'screens/customer_dashboard.dart';
 import 'screens/merchant_dashboard.dart';
 import 'screens/Login.dart';
@@ -19,10 +20,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MyHomePage(title: 'Micronaut',),
-        '/login': (context) => Login(),
-        '/register': (context) => Register(),
-        '/customer_dashboard': (context) => CustomerDashboard(),
-        '/merchant_dashboard': (context) => MerchantDashboard(),
+        '/login': (context) => const Login(),
+        '/register': (context) => const Register(),
+        '/customer_dashboard': (context) => const CustomerDashboard(),
+        '/customer_dashboard': (context) => const CustomerHomeScreen(),
+        '/merchant_dashboard': (context) => const MerchantDashboard(),
       },
       theme: ThemeData(
         // This is the theme of your application.
